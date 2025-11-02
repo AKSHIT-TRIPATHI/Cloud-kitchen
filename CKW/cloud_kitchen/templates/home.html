@@ -1,0 +1,302 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home | CKW Cloud Kitchen</title>
+  <link rel="stylesheet" href="{% static 'menu.css' %}" />
+  <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+  <script src="https://kit.fontawesome.com/95a02bd20d.js"></script>
+  <style>
+    :root {
+      --glow-color: hsl(0, 0%, 95%);
+    }
+
+    /* Navbar Styles */
+    nav {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 0 25px;
+      box-shadow: 10px 5px 15px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+
+    .nav-content {
+      display: flex;
+      height: 70px;
+      align-items: center;
+      list-style: none;
+      position: relative;
+      gap: 1em;
+    }
+
+    .link-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 60px;
+      width: 80px;
+      text-decoration: none;
+      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .link-item.active {
+      transform: translateY(-8px);
+    }
+
+    .link-icon {
+      font-size: 30px;
+      color: #999;
+      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .link-item.active .link-icon {
+      color: var(--glow-color);
+    }
+
+    .link-text {
+      position: absolute;
+      font-size: 10px;
+      font-weight: 500;
+      color: #999;
+      transform: translateY(25px);
+      transition: color 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .link-item.active .link-text {
+      color: var(--glow-color);
+    }
+
+    /* Welcome Message */
+    .welcome-message {
+      position: fixed;
+      top: 80%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 500;
+      color: var(--glow-color);
+      font-family: "Montserrat", sans-serif;
+      text-shadow: 0 0 20px var(--glow-color);
+    }
+
+    .welcome-message h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin: 0;
+      letter-spacing: 0.1em;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 20px var(--glow-color);
+      }
+      to {
+        text-shadow: 0 0 30px var(--glow-color), 0 0 40px var(--glow-color);
+      }
+    }
+
+    /* Logout Button */
+    .logout-container {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      z-index: 1000;
+    }
+
+    .logout-btn {
+      position: relative;
+      color: var(--glow-color);
+      cursor: pointer;
+      padding: 0.35em 1em;
+      border: 0.15em solid var(--glow-color);
+      border-radius: 0.45em;
+      background: none;
+      perspective: 2em;
+      font-family: "Montserrat", sans-serif;
+      font-size: 18px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      -webkit-box-shadow: inset 0px 0px 0.5em 0px var(--glow-color),
+        0px 0px 0.5em 0px var(--glow-color);
+      -moz-box-shadow: inset 0px 0px 0.5em 0px var(--glow-color),
+        0px 0px 0.5em 0px var(--glow-color);
+      box-shadow: inset 0px 0px 0.5em 0px var(--glow-color),
+        0px 0px 0.5em 0px var(--glow-color);
+      animation: border-flicker 2s linear infinite;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .logout-btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      opacity: 0.7;
+      filter: blur(1em);
+      transform: translateY(120%) rotateX(95deg) scale(1, 0.35);
+      background: var(--glow-color);
+      pointer-events: none;
+    }
+
+    .logout-btn::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0;
+      z-index: -1;
+      background-color: var(--glow-color);
+      box-shadow: 0 0 2em 0.2em var(--glow-color);
+      transition: opacity 100ms linear;
+    }
+
+    .logout-btn:hover {
+      color: rgba(0, 0, 0, 0.8);
+      text-shadow: none;
+      animation: none;
+    }
+
+    .logout-btn:hover:before {
+      filter: blur(1.5em);
+      opacity: 1;
+    }
+
+    .logout-btn:hover:after {
+      opacity: 1;
+    }
+
+    @keyframes border-flicker {
+      0% {
+        opacity: 0.1;
+      }
+      2% {
+        opacity: 1;
+      }
+      4% {
+        opacity: 0.1;
+      }
+      8% {
+        opacity: 1;
+      }
+      70% {
+        opacity: 0.7;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <video autoplay muted loop class="background-video">
+    <source src="{% static 'videos/BG2.mp4' %}" type="video/mp4">
+  </video>
+  <nav class="nav">
+    <ul class="nav-content">
+      <li class="nav-list">
+        <a href="{% url 'home' %}" class="link-item active">
+          <i class='bx bxs-home link-icon'></i>
+          <span class="link-text">Home</span>
+        </a>
+      </li>
+      <li class="nav-list">
+         <a href="{% url 'menu' %}" class="link-item">
+           <i class='bx bxs-food-menu link-icon'></i>
+           <span class="link-text">Menu</span>
+         </a>
+      </li>
+      <li class="nav-list">
+        <a href="{% url 'offers' %}" class="link-item">
+          <i class='bx bxs-offer link-icon'></i>
+          <span class="link-text">Offers</span>
+        </a>
+      </li>
+      <li class="nav-list">
+        <a href="{% url 'cart' %}" class="link-item">
+          <i class='bx bxs-shopping-bag link-icon'></i>
+          <span class="link-text">Cart</span>
+        </a>
+      </li>
+      <li class="nav-list">
+        <a href="{% url 'track' %}" class="link-item">
+          <i class='bx bxs-truck link-icon'></i>
+          <span class="link-text">Track</span>
+        </a>
+      </li>
+      <li class="nav-list">
+        <a href="{% url 'about' %}" class="link-item">
+          <i class='bx bxs-info-circle link-icon'></i>
+          <span class="link-text">About</span>
+        </a>
+      </li>
+      <li class="nav-list">
+        <a href="{% url 'contact' %}" class="link-item">
+          <i class='bx bxs-phone link-icon'></i>
+          <span class="link-text">Contact</span>
+        </a>
+      </li>
+      <li class="nav-list">
+        <a href="{% url 'reviews' %}" class="link-item">
+          <i class='bx bxs-star link-icon'></i>
+          <span class="link-text">Reviews</span>
+        </a>
+      </li>
+      <li class="nav-list">
+        <a href="{% url 'profile' %}" class="link-item">
+          <i class='bx bxs-user link-icon'></i>
+          <span class="link-text">Profile</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <div class="logout-container">
+    <a href="{% url 'login' %}" class="logout-btn">Logout</a>
+  </div>
+
+  <!-- Welcome Message -->
+  <div class="welcome-message">
+    <h1>Welcome back {{ username }}!</h1>
+  </div>
+
+  <!-- Loading Animation -->
+  <div class="no-items">
+    <div class="no-items-content">
+      <div class="ring-container">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const linkItems = document.querySelectorAll('.link-item');
+
+      linkItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+          // Remove active class from all items
+          linkItems.forEach(link => link.classList.remove('active'));
+          // Add active class to clicked item
+          this.classList.add('active');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
