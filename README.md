@@ -1,7 +1,7 @@
 # CKW Cloud Kitchen 🍽️
 
 A comprehensive Django-based web application for a modern cloud kitchen food ordering system. Built with Django 5.2.4, featuring user authentication, dynamic menu management, shopping cart functionality, order tracking, and customer reviews.
-
+# For ADMIN panel control contact: sharmaakshit820@gmail.com
 ## 🚀 Features
 
 ### 🔐 User Management
