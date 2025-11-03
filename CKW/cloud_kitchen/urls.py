@@ -1,0 +1,31 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.login_view, name='login'),
+    path('register/', views.register_view, name='register'),
+    path('home/', views.home_view, name='home'),
+    path('menu/', views.menu_view, name='menu'),
+    path('offers/', views.offers_view, name='offers'),
+    path('starters/', views.starters_view, name='starters'),
+    path('main-course/', views.main_course_view, name='main_course'),
+    path('biryani/', views.biryani_view, name='biryani'),
+    path('burgers/', views.burgers_view, name='burgers'),
+    path('desserts/', views.desserts_view, name='desserts'),
+    path('combos/', views.combos_view, name='combos'),
+    path('drinks/', views.drinks_view, name='drinks'),
+    path('cart/', views.cart_view, name='cart'),
+    path('add-to-cart/<int:item_id>/', views.add_to_cart, name='add_to_cart'),
+    path('update-cart-item/<int:item_id>/', views.update_cart_item, name='update_cart_item'),
+    path('remove-from-cart/<int:item_id>/', views.remove_from_cart, name='remove_from_cart'),
+    path('forgot-password/', views.forgot_password_view, name='forgot_password'),
+    path('profile/', views.profile_view, name='profile'),
+    path('logout/', views.logout_view, name='logout'),
+    path('order-confirmation/', views.order_confirmation_view, name='order_confirmation'),
+    path('about/', views.about_view, name='about'),
+    path('contact/', views.contact_view, name='contact'),
+    path('reviews/', views.reviews_view, name='reviews'),
+    path('submit-review/', views.submit_review, name='submit_review'),
+    path('get-reviews/', views.get_reviews, name='get_reviews'),
+    path('track/', views.track_view, name='track'),
+]
