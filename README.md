@@ -237,7 +237,7 @@ deactivate
 - Loyalty program implementation
 - Mobile app development
 - Multi-language support
-
+## NOTE: sign in/log in using google and apple is still in dev.
 ## 📞 Support
 
 For questions or support regarding the CKW Cloud Kitchen project, please use the contact form within the application or reach out through GitHub issues.
