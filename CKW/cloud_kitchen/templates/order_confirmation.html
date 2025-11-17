@@ -1,0 +1,182 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation | CKW Cloud Kitchen</title>
+    <link rel="stylesheet" href="{% static 'cart.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://kit.fontawesome.com/95a02bd20d.js"></script>
+</head>
+<body>
+    <video autoplay muted loop class="background-video">
+        <source src="{% static 'videos/BG2.mp4' %}" type="video/mp4">
+    </video>
+
+    <!-- Navigation Bar -->
+    <nav class="nav">
+        <ul class="nav-content">
+            <li class="nav-list">
+                <a href="{% url 'home' %}" class="link-item">
+                    <i class='bx bxs-home link-icon'></i>
+                    <span class="link-text">Home</span>
+                </a>
+            </li>
+            <li class="nav-list">
+                <a href="{% url 'menu' %}" class="link-item">
+                    <i class='bx bxs-food-menu link-icon'></i>
+                    <span class="link-text">Menu</span>
+                </a>
+            </li>
+            <li class="nav-list">
+                <a href="{% url 'offers' %}" class="link-item">
+                    <i class='bx bxs-offer link-icon'></i>
+                    <span class="link-text">Offers</span>
+                </a>
+            </li>
+            <li class="nav-list">
+                <a href="{% url 'cart' %}" class="link-item">
+                    <i class='bx bxs-shopping-bag link-icon'></i>
+                    <span class="link-text">Cart</span>
+                </a>
+            </li>
+            <li class="nav-list">
+                <a href="{% url 'track' %}" class="link-item">
+                    <i class='bx bxs-truck link-icon'></i>
+                    <span class="link-text">Track</span>
+                </a>
+            </li>
+            <li class="nav-list">
+              <a href="{% url 'about' %}" class="link-item">
+                <i class='bx bxs-info-circle link-icon'></i>
+                <span class="link-text">About</span>
+              </a>
+            </li>
+            <li class="nav-list">
+              <a href="{% url 'contact' %}" class="link-item">
+                <i class='bx bxs-phone link-icon'></i>
+                <span class="link-text">Contact</span>
+              </a>
+            </li>
+            <li class="nav-list">
+                <a href="{% url 'reviews' %}" class="link-item">
+                    <i class='bx bxs-star link-icon'></i>
+                    <span class="link-text">Reviews</span>
+                </a>
+            </li>
+            <li class="nav-list">
+                <a href="{% url 'profile' %}" class="link-item">
+                    <i class='bx bxs-user link-icon'></i>
+                    <span class="link-text">Profile</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Logout Button -->
+    <div class="logout-container">
+        <a href="{% url 'login' %}" class="logout-btn">Logout</a>
+    </div>
+
+    <!-- Order Confirmation Title -->
+    <div class="cart-title">
+        <h1>🎉 Order Placed!!</h1>
+        <p>Order #{{ order_number }} - Your delicious order is being prepared</p>
+    </div>
+
+    <!-- Order Details Container -->
+    <div class="cart-container">
+        {% if cart_items %}
+        <!-- Order Items -->
+        <div class="cart-items">
+            <h3 style="color: #333; margin-bottom: 20px; text-align: center;">Order Details</h3>
+            {% for item in cart_items %}
+            <div class="cart-item">
+                <div class="item-image">
+                    <i class="{{ item.icon_class }}"></i>
+                </div>
+                <div class="item-details">
+                    <h3>{{ item.name }}</h3>
+                    <p>{{ item.description|truncatechars:80 }}</p>
+                    <div class="item-price">₹{{ item.price }}</div>
+                </div>
+                <div class="quantity-controls">
+                    <span class="quantity">Qty: {{ item.quantity }}</span>
+                </div>
+                <div class="item-total">₹{{ item.total_price }}</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Order Summary -->
+        <div class="cart-summary">
+            <h3>Order Summary</h3>
+            <div class="summary-row">
+                <span>Subtotal:</span>
+                <span>₹{{ subtotal }}</span>
+            </div>
+            <div class="summary-row">
+                <span>Delivery Fee:</span>
+                <span>₹{{ delivery_fee }}</span>
+            </div>
+            <div class="summary-row">
+                <span>Tax:</span>
+                <span>₹{{ tax }}</span>
+            </div>
+            <div class="summary-row total-row">
+                <span><strong>Total:</strong></span>
+                <span><strong>₹{{ total }}</strong></span>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <div style="background: #e8f5e8; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h4 style="color: #2d5016; margin-bottom: 10px;">✅ Order Placed Successfully!</h4>
+                    <p style="color: #2d5016; margin: 0;">Your order is being prepared. You'll receive updates soon.</p>
+                </div>
+
+                <button onclick="trackOrder()" class="checkout-btn" style="margin-bottom: 15px;">
+                    Track My Order
+                </button>
+
+                <button onclick="continueShopping()" class="continue-shopping-btn">
+                    Order More Food
+                </button>
+            </div>
+        </div>
+        {% else %}
+        <!-- No items (shouldn't happen) -->
+        <div class="empty-cart">
+            <div class="empty-cart-content">
+                <h2>No order found!</h2>
+                <p>Please go back to menu and place an order.</p>
+                <a href="{% url 'menu' %}" class="view-all-menu-btn">Browse Menu</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const linkItems = document.querySelectorAll('.link-item');
+
+            linkItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // Remove active class from all items
+                    linkItems.forEach(link => link.classList.remove('active'));
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                });
+            });
+        });
+
+        function trackOrder() {
+            window.location.href = "{% url 'track' %}";
+        }
+
+        function continueShopping() {
+            window.location.href = "{% url 'menu' %}";
+        }
+    </script>
+</body>
+</html>

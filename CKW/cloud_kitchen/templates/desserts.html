@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desserts & Ice Creams | CKW Cloud Kitchen</title>
+    <link rel="stylesheet" href="{% static 'menu.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://kit.fontawesome.com/95a02bd20d.js"></script>
+</head>
+<body>
+    <video autoplay muted loop class="background-video">
+        <source src="{% static 'videos/BG2.mp4' %}" type="video/mp4">
+    </video>
+
+    <!-- Navigation Bar -->
+    <nav class="nav">
+        <ul class="nav-content">
+            <li class="nav-list">
+                <a href="{% url 'home' %}" class="link-item">
+                    <i class='bx bxs-home link-icon'></i>
+                    <span class="link-text">Home</span>
+                </a>
+            </li>
+            <li class="nav-list">
+                <a href="{% url 'menu' %}" class="link-item">
+                    <i class='bx bxs-food-menu link-icon'></i>
+                    <span class="link-text">Menu</span>
+                </a>
+            </li>
+            <li class="nav-list">
+                <a href="{% url 'offers' %}" class="link-item">
+                    <i class='bx bxs-offer link-icon'></i>
+                    <span class="link-text">Offers</span>
+                </a>
+            </li>
+            <li class="nav-list">
+                <a href="{% url 'cart' %}" class="link-item">
+                    <i class='bx bxs-shopping-bag link-icon'></i>
+                    <span class="link-text">Cart</span>
+                </a>
+            </li>
+            <li class="nav-list">
+                <a href="{% url 'track' %}" class="link-item">
+                    <i class='bx bxs-truck link-icon'></i>
+                    <span class="link-text">Track</span>
+                </a>
+            </li>
+            <li class="nav-list">
+              <a href="{% url 'about' %}" class="link-item">
+                <i class='bx bxs-info-circle link-icon'></i>
+                <span class="link-text">About</span>
+              </a>
+            </li>
+            <li class="nav-list">
+              <a href="{% url 'contact' %}" class="link-item">
+                <i class='bx bxs-phone link-icon'></i>
+                <span class="link-text">Contact</span>
+              </a>
+            </li>
+            <li class="nav-list">
+                <a href="{% url 'reviews' %}" class="link-item">
+                    <i class='bx bxs-star link-icon'></i>
+                    <span class="link-text">Reviews</span>
+                </a>
+            </li>
+            <li class="nav-list">
+                <a href="{% url 'profile' %}" class="link-item">
+                    <i class='bx bxs-user link-icon'></i>
+                    <span class="link-text">Profile</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Logout Button -->
+    <div class="logout-container">
+        <a href="{% url 'login' %}" class="logout-btn">Logout</a>
+    </div>
+
+    <!-- Back Button -->
+    <div class="back-container">
+        <a href="{% url 'menu' %}" class="back-btn">← Back to Menu</a>
+    </div>
+
+    <!-- CSRF Token -->
+    {% csrf_token %}
+
+    <!-- Page Title -->
+    <div class="page-title">
+        <h1>🍰 Desserts & Ice Creams</h1>
+        <p>Sweet treats and creamy ice creams to end your meal perfectly</p>
+    </div>
+
+    <!-- Items List -->
+    <div class="items-container">
+        {% for item in food_items %}
+        <div class="item-card">
+            <div class="item-content">
+                <div class="item-icon">
+                    <i class="{{ item.icon_class }}"></i>
+                </div>
+                <div class="item-details">
+                    <h3>{{ item.name }}</h3>
+                    <p>{{ item.description }}</p>
+                    <span class="price">₹{{ item.price }}</span>
+                </div>
+                <button class="add-btn" onclick="addToCart({{ item.id }}, '{{ item.name|escapejs }}')">
+                    <i class="fas fa-cart-plus"></i> ADD TO CART
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+        {% if not food_items %}
+        <div class="no-items">
+            <div class="no-items-content">
+                <div class="ring-container">
+                    <div class="ring"></div>
+                    <div class="ring"></div>
+                    <div class="ring"></div>
+                </div>
+                <p>Coming Soon</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const linkItems = document.querySelectorAll('.link-item');
+
+            linkItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // Remove active class from all items
+                    linkItems.forEach(link => link.classList.remove('active'));
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                });
+            });
+        });
+
+        async function addToCart(itemId, itemName) {
+            try {
+                const response = await fetch(`/add-to-cart/${itemId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || ''
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert(`${itemName} added to cart successfully!`);
+                } else {
+                    alert('Error adding item to cart: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while adding item to cart. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>
