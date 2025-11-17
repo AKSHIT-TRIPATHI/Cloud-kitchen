@@ -221,6 +221,7 @@ deactivate
 - Session management
 - SQL injection prevention through Django ORM
 - XSS protection with template escaping
+- Password reset via E-mail function
 
 ## 📱 Responsive Design
 
